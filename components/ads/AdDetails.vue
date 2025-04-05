@@ -84,6 +84,7 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
+import {useCookie} from "#app";
 
 const props = defineProps({
   ad: {
@@ -125,7 +126,11 @@ async function mintNFT() {
     loading.value = true;
     error.value = null;
 
-    const tokenInfo = await axios.get(`http://localhost:8989/v1/ads/4/nftInfo`);
+    const tokenInfo = await axios.get(`http://localhost:8989/v1/ads/4/nftInfo`, {
+      headers: {
+        Authorization: useCookie('token').value || null
+      }
+    });
     token.value = tokenInfo.data.data;
   } catch (err) {
     console.error("Ошибка:", err);

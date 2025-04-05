@@ -16,10 +16,10 @@
           Доступные объявления
         </button>
         <button
-            @click="setActiveTab('mine')"
+            @click="setActiveTab('favorites')"
             :class="[
             'px-6 py-2 font-semibold rounded-r-lg',
-            activeTab === 'mine' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700',
+            activeTab === 'favorites' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700',
           ]"
         >
           Мои объявления
@@ -37,7 +37,7 @@
 
     <!-- Список объявлений -->
     <div>
-      <AdList :ads="filteredAds" />
+      <AdList :ads="ads" />
     </div>
   </div>
 </template>
@@ -54,21 +54,31 @@ const activeTab = ref("all"); // Управляет активной вклад�
 
 // Загружаем объявления
 await adsStore.fetchAds();
-const ads = adsStore.ads.data;
+const ads = ref(adsStore.ads);
+console.log(ads.value)
 
 // Текущий пользователь
 const currentUserId = "123"; // Пример, заменить на реальный ID пользователя
 
 // Вычисляемый список объявлений в зависимости от вкладки
 const filteredAds = computed(() => {
-  return activeTab.value === "all"
-      ? ads
-      : ads.filter(ad => ad.userId === currentUserId);
+  if (activeTab.value === "all") {
+    ads.value = adsStore.ads
+    return adsStore.ads; // Все объявления
+  } else if (activeTab.value === "favorites") {
+    return adsStore.ads.filter((ad) => ad.is_favorite == 1); // Используем == вместо ===
+  }
+  return [];
 });
 
 // Методы
-const setActiveTab = tab => {
+const setActiveTab = async tab => {
   activeTab.value = tab;
+  if (tab === 'all') {
+    ads.value = adsStore.ads
+  } else {
+    ads.value = adsStore.ads.filter((ad) => ad.is_favorite === 1)
+  }
 };
 const goToCreateAd = () => router.push("/ads/create");
 </script>

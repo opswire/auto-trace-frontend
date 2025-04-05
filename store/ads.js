@@ -18,8 +18,12 @@ export const useAdsStore = defineStore('ads', {
             const { $axios } = useNuxtApp(); // Получаем экземпляр axios
 
             try {
-                const response = await $axios.get('/ads'); // Запрос к API /ads
-                this.ads = response.data;
+                const response = await $axios.get('/ads', {
+                    headers: {
+                        Authorization: useCookie('token').value || null
+                    }
+                });
+                this.ads = response.data.data;
             } catch (err) {
                 console.error('Error loading ads:', err);
                 this.error = err.message;
@@ -34,7 +38,11 @@ export const useAdsStore = defineStore('ads', {
             const { $axios } = useNuxtApp(); // Получаем экземпляр axios
 
             try {
-                const response = await $axios.get(`/ads/${id}`); // Запрос к API /ads
+                const response = await $axios.get(`/ads/${id}`, {
+                    headers: {
+                        Authorization: useCookie('token').value || null
+                    }
+                }); // Запрос к API /ads
                 this.currentAd = response.data;
             } catch (err) {
                 console.error('Error loading ads:', err);
@@ -57,7 +65,8 @@ export const useAdsStore = defineStore('ads', {
                 },
             })
                 .then(response => {
-                    console.log(response)
+                    const ad = this.ads.filter(ad => ad.id === adId)
+                    ad.is_favorite = (ad.is_favorite === 0 ? 1 : 0)
                 })
                 .catch(error => {
                     this.error = error.message
@@ -65,6 +74,9 @@ export const useAdsStore = defineStore('ads', {
                 }).finally(() => {
                     this.loading = false
                 })
+        },
+        async getFavoriteAds() {
+            return this.ads.filter(ad => ad.is_favorite === 1)
         },
     }
 });

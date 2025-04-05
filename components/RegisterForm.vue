@@ -39,6 +39,7 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
+const router = useRouter();
 
 const email = ref('');
 const password = ref('');
@@ -46,12 +47,12 @@ const errorMessage = ref('');
 
 const handleSubmit = async () => {
   try {
-    const response = await axios.post('localhost:8787/api/v1/register', { email: email.value, password: password.value });
-    // После успешной регистрации перенаправляем пользователя
+    const response = await axios.post('http://localhost:8787/api/v1/users/register', { email: email.value, password: password.value });
     console.log('Регистрация успешна:', response.data);
-    // Замените на нужную страницу, например, /dashboard
-    this.$router.push('/dashboard');
+
+    await router.push("/");
   } catch (error) {
+    console.log(error)
     errorMessage.value = error.response?.data?.message || 'Ошибка регистрации';
   }
 };
