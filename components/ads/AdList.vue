@@ -12,10 +12,10 @@ import AdCard from './AdCard.vue';
 
 const props = defineProps({
   ads: {
-    type: Object,
+    type: Array, // Исправлено с Object на Array
     required: true,
-  },
+    default: () => [] // Добавлено значение по умолчанию
+  }
 });
 
-const {ads} = props
 </script>

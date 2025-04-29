@@ -6,6 +6,7 @@ export const useAuthStore = defineStore('auth', {
     state: () => ({
         token: useCookie('token').value || null, // Инициализация токена из cookie
         isAuthenticated: !!useCookie('token').value,
+        profile: null,
     }),
     actions: {
         setToken(token) {
@@ -37,5 +38,21 @@ export const useAuthStore = defineStore('auth', {
             const router = useRouter();
             router.push({ name: 'login' });
         },
+        async fetchProfile() {
+            await $fetch(`http://localhost:8787/api/v1/users/profile`, {
+                method: 'GET',
+                headers: {
+                    Authorization: useCookie('token').value || null,
+                    'Content-Type': 'application/json',
+                }
+            })
+                .then(response => {
+                    console.log("profile: ", response.data)
+                    this.profile = response.data
+                })
+                .catch(error => {
+                    throw error
+                })
+        }
     },
 })

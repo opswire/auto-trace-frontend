@@ -8,7 +8,7 @@
     }"
       class="font-medium"
   >
-    {{ isFav ? 'Remove from Favorites' : 'Add to Favorites' }}
+    {{ isFav ? 'Удалить из избранного' : 'Добавить в избранное' }}
   </button>
 </template>
 
@@ -24,7 +24,7 @@ const props = defineProps({
     required: true
   },
   isFavorite: {
-    type: Number,
+    type: Boolean,
     required: true,
   }
 });
@@ -33,7 +33,7 @@ const {adId, isFavorite} = props
 const isFav = toRef(isFavorite)
 
 const toggleFavorite = () => {
+  isFav.value = (isFav.value === false)
   adsStore.toggleFavorite(adId)
-  isFav.value = isFav.value === 0 ? 1 : 0
 };
 </script>

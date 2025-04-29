@@ -10,7 +10,7 @@
       </svg>
     </button>
 
-    <h1 class="text-4xl font-bold text-center mb-6 text-blue-700">Создание объявления</h1>
+    <h1 class="text-4xl font-bold text-center mb-6 text-blue-700">Редактирование объявления</h1>
     <form @submit.prevent="submitForm" class="space-y-6">
       <!-- Название -->
       <div class="form-group">
@@ -120,7 +120,7 @@
             type="submit"
             class="submit-button"
         >
-          Создать объявление
+          Редактировать объявление
         </button>
       </div>
     </form>
@@ -130,37 +130,28 @@
 <script setup>
 import axios from 'axios';
 import { ref } from 'vue';
+import {useAdsStore} from "~/store/ads.js";
 
-const router = useRouter();
-const form = ref({
-  title: 'test title',
-  description: 'test description',
-  price: 1337,
-  vin: 'test vin',
-  brand: 'test brand',
-  model: 'test model',
-  year_of_release: 2000,
-  image: null,
-})
+const route = useRoute()
+const router = useRouter()
+const adStore = useAdsStore();
 
-const handleFileUpload = (event) => {
-  console.log(event.target.files[0])
-  form.value.image = event.target.files[0]
-}
+await adStore.fetchAdById(route.params.id)
+const form = ref(adStore.currentAd)
+
+const handleFileUpload = (event) => form.value.image = event.target.files[0]
 
 const submitForm = async () => {
-  try {
-    await axios.post('http://localhost:8989/api/v1/ads', form.value, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+  form.current_image_url = form.value.image_url
+  await adStore.updateAd(form.value)
 
-    await router.push('/ads?saved=true');
-  } catch (error) {
-    console.error('Ошибка при создании объявления:', error);
-    await router.push({path: `/ads/create`, query: { error: error }});
+  if (adStore.error) {
+    console.log(adStore.error)
+    await router.push({path: `/ads/${route.params.id}`, query: { error: adStore.error }});
+    return
   }
+
+  await router.push(`/ads/${route.params.id}?saved=true`);
 }
 
 const goBack = () => router.go(-1)

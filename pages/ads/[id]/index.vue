@@ -7,14 +7,15 @@
 
 <script setup lang="ts">
 
-import AdCard from "~/components/ads/AdCard.vue";
+import { ref } from 'vue';
 import {useAdsStore} from "~/store/ads";
 import AdDetails from "~/components/ads/AdDetails.vue";
 
+const ad = ref('')
 const route = useRoute()
 const adStore = useAdsStore()
 
 await adStore.fetchAdById(route.params.id)
-const ad = adStore.currentAd.data
+ad.value = adStore.currentAd
 </script>
 
