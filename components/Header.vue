@@ -166,7 +166,8 @@ const isMobileMenuOpen = ref(false)
 
 const navItems = [
   { label: 'Объявления', to: '/ads' },
-  { label: 'Диалоги', to: '/chats' }
+  { label: 'Диалоги', to: '/chats' },
+  { label: 'Договоры', to: '/contracts' },
 ]
 
 const avatarUrl = computed(() =>

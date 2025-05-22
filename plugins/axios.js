@@ -2,10 +2,30 @@
 import axios from 'axios';
 
 export default defineNuxtPlugin((nuxtApp) => {
-    const api = axios.create({
-        baseURL: process.env.NUXT_PUBLIC_API_BASE_URL || 'http://localhost:8989/api/v1',
+    const config = useRuntimeConfig()
+    const adsApiUrl = config.public.adsApiBaseUrl;
+    const nftApiUrl = config.public.nftApiBaseUrl;
+    const ssoApiUrl = config.public.ssoApiBaseUrl;
+
+    const axiosAds = axios.create({
+        baseURL: `${adsApiUrl}/api/v1`,
+    });
+    const axiosPayment = axios.create({
+        baseURL: `${adsApiUrl}/api/v1`,
+    });
+    const axiosChat = axios.create({
+        baseURL: `${adsApiUrl}/api/v1`,
+    });
+    const axiosNft = axios.create({
+        baseURL: `${nftApiUrl}/api/v1`,
+    });
+    const axiosSso = axios.create({
+        baseURL: `${ssoApiUrl}/api/v1`,
     });
 
-    // Добавляем api в контекст Nuxt
-    nuxtApp.provide('axios', api);
+    nuxtApp.provide('axiosAds', axiosAds);
+    nuxtApp.provide('axiosPayment', axiosPayment);
+    nuxtApp.provide('axiosChat', axiosChat);
+    nuxtApp.provide('axiosNft', axiosNft);
+    nuxtApp.provide('axiosSso', axiosSso);
 });

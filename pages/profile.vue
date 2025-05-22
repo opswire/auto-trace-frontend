@@ -16,7 +16,7 @@
 
         <div class="profile-details space-y-4">
           <div class="detail-item flex items-center space-x-4 p-4 rounded-lg hover:bg-gray-50 transition-all">
-            <UserIcon class="w-8 h-8 text-blue-600" />
+            <UserIcon class="w-8 h-8 text-blue-600"/>
             <div>
               <p class="text-sm text-gray-500">ID</p>
               <p class="font-medium">{{ user?.data?.id || 'Loading...' }}</p>
@@ -24,7 +24,7 @@
           </div>
 
           <div class="detail-item flex items-center space-x-4 p-4 rounded-lg hover:bg-gray-50 transition-all">
-            <EnvelopeIcon class="w-8 h-8 text-purple-600" />
+            <EnvelopeIcon class="w-8 h-8 text-purple-600"/>
             <div>
               <p class="text-sm text-gray-500">Email</p>
               <p class="font-medium">{{ user?.data?.email || 'Loading...' }}</p>
@@ -46,17 +46,18 @@
     <div v-if="isLoading" class="loading-overlay">
       <svg class="animate-spin h-16 w-16 text-blue-600" viewBox="0 0 24 24">
         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        <path class="opacity-75" fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
       </svg>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { UserIcon, EnvelopeIcon } from '@heroicons/vue/24/solid'
-import { useAuthStore } from '~/store/auth'
+import {ref, onMounted} from 'vue'
+import {useRouter} from 'vue-router'
+import {UserIcon, EnvelopeIcon} from '@heroicons/vue/24/solid'
+import {useAuthStore} from '~/store/auth'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -66,23 +67,19 @@ const isLoading = ref(true)
 onMounted(async () => {
   try {
     if (!authStore.token) {
-      router.push('/login')
+      await router.push('/login')
       return
     }
 
-    const response = await fetch('http://localhost:8787/api/v1/users/profile', {
-      headers: {
-        Authorization: authStore.token
-      }
-    })
+    const response = await authStore.fetchProfile(authStore.token)
 
     if (!response.ok) throw new Error('Ошибка загрузки профиля')
 
     user.value = await response.json()
   } catch (error) {
     console.error('Ошибка:', error)
-    authStore.logout()
-    router.push('/login')
+    await authStore.logout()
+    await router.push('/login')
   } finally {
     isLoading.value = false
   }
@@ -133,9 +130,15 @@ const handleEditProfile = () => {
 }
 
 @keyframes gradientAnimation {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .text-gradient {

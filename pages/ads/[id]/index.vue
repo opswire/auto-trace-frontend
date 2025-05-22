@@ -11,7 +11,7 @@ import { ref } from 'vue';
 import {useAdsStore} from "~/store/ads";
 import AdDetails from "~/components/ads/AdDetails.vue";
 
-const ad = ref('')
+const ad = ref(null)
 const route = useRoute()
 const adStore = useAdsStore()
 

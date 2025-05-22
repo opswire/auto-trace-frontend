@@ -38,7 +38,9 @@
 
 <script setup>
 import { ref } from 'vue';
-import axios from 'axios';
+import {useAuthStore} from "~/store/auth.js";
+
+const authStore = useAuthStore()
 const router = useRouter();
 
 const email = ref('');
@@ -47,10 +49,11 @@ const errorMessage = ref('');
 
 const handleSubmit = async () => {
   try {
-    const response = await axios.post('http://localhost:8787/api/v1/users/register', { email: email.value, password: password.value });
+    const response = await authStore.register(email.value, password.value)
+
     console.log('Регистрация успешна:', response.data);
 
-    await router.push("/");
+    await router.push({path: '/', query: {success: 'Регистрация успешна!'}});
   } catch (error) {
     console.log(error)
     errorMessage.value = error.response?.data?.message || 'Ошибка регистрации';
@@ -59,24 +62,4 @@ const handleSubmit = async () => {
 </script>
 
 <style scoped>
-.input-field {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  margin-top: 0.25rem;
-}
-
-.btn-primary {
-  background-color: #4f46e5;
-  color: white;
-  padding: 0.75rem;
-  border-radius: 4px;
-  font-weight: bold;
-  transition: background-color 0.3s;
-}
-
-.btn-primary:hover {
-  background-color: #3730a3;
-}
 </style>

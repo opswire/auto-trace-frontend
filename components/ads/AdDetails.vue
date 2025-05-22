@@ -15,7 +15,7 @@
             <!-- Заголовок и цена -->
             <div class="flex items-center justify-between mb-6">
               <h1 class="text-3xl font-bold text-gray-800">{{ ad.title }}</h1>
-              <span class="text-2xl font-semibold text-blue-600">{{ ad.price }} $</span>
+              <span class="text-2xl font-semibold text-blue-600">{{ formattedPrice }}</span>
             </div>
 
             <!-- Изображение автомобиля -->
@@ -23,26 +23,50 @@
               <img
                   :src="imageUrl"
                   alt="Car"
-                  class="w-full h-96 object-cover rounded-xl shadow-md transition-transform duration-300 hover:scale-105"
+                  class="w-full h-124 object-cover rounded-xl shadow-md transition-transform duration-300 hover:scale-105"
               >
             </div>
 
-            <!-- Детали объявления -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              <CarDetails
-                  title="Описание"
-                  :content="ad.description"
-                  icon="📝"
-              />
+            <!-- Детали -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <!-- Характеристики -->
               <CarDetails
                   title="Характеристики"
-                  :content="`${ad.brand} ${ad.model}, ${ad.year_of_release} год`"
-                  icon="🚘"
+                  :items="[
+              { label: 'Марка', value: ad.brand, monospace: true },
+              { label: 'Модель', value: ad.model, monospace: true },
+              { label: 'Год', value: ad.year_of_release, monospace: true },
+              { label: 'Категория', value: ad.category, monospace: true },
+              { label: 'Тип прав', value: ad.type, monospace: true }
+            ]"
+                  icon="📝"
+              />
+
+              <!-- Регистрация -->
+              <CarDetails
+                  title="Регистрация"
+                  :items="[
+              { label: 'VIN', value: ad.vin, monospace: true },
+              { label: 'Рег. номер', value: ad.reg_number, monospace: true },
+              { label: 'Цвет', value: ad.color, monospace: true }
+            ]"
+                  icon=📌
+              />
+
+              <!-- Техника -->
+              <CarDetails
+                  title="Техника"
+                  :items="[
+              { label: 'Мощность', value: `${ad.hp} л.с.`, monospace: true, highlight: true },
+              { label: 'Полная масса', value: `${ad.full_weight} кг`, monospace: true },
+              { label: 'Снаряженная масса', value: `${ad.solo_weight} кг`, monospace: true }
+            ]"
+                  icon="⚙️"
               />
             </div>
 
             <!-- Блок продавца -->
-            <div class="bg-gray-50 rounded-xl p-6 mb-8">
+            <div class="bg-gray-50 rounded-xl p-6 mb-8" v-if="currentUserId != ad.user_id">
               <div class="flex items-center gap-4 mb-4">
                 <img
                     :src="avatarUrl"
@@ -63,7 +87,7 @@
             </div>
 
             <!-- Кнопки действий -->
-            <div class="flex flex-wrap gap-4" v-if="currentUserId === ad.user_id">
+            <div class="flex flex-wrap gap-4 mt-12" v-if="currentUserId == ad.user_id">
               <button
                   v-if="!ad.is_token_minted"
                   @click="mintNFT"
@@ -91,7 +115,7 @@
                   class="action-btn bg-purple-500 hover:bg-purple-600"
                   :disabled="ad.promotion.enabled"
               >
-                {{ ad.promotion.enabled ? '📈 Продвигается...' :  '📈 Продвинуть' }}
+                {{ ad.promotion.enabled ? '📈 Продвигается...' : '📈 Продвинуть' }}
               </button>
             </div>
           </div>
@@ -139,19 +163,104 @@
           </Transition>
 
           <!-- NFT информация -->
-          <div v-if="token" class="bg-white rounded-xl shadow-lg p-6">
-            <h2 class="text-2xl font-bold mb-4">NFT Детали</h2>
-            <div class="space-y-4">
-              <p><strong>Адрес контракта:</strong> {{ token.contract_addr }}</p>
-              <p><strong>Сеть:</strong> {{ token.chain_name }} (ID: {{ token.chain_id }})</p>
-              <p><strong>Имя токена:</strong> {{ token.token_metadata.name }}</p>
-              <p><strong>Описание:</strong> {{ token.token_metadata.description }}</p>
+          <div v-if="ad.is_token_minted" class="bg-white rounded-xl shadow-lg p-6 mb-8">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="text-2xl font-bold">NFT Паспорт автомобиля</h2>
+              <a
+                  :href="nftData.token_data.token_url"
+                  target="_blank"
+                  class="text-blue-500 hover:text-blue-700 flex items-center"
+              >
+                Посмотреть в блокчейне
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                  <path
+                      d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/>
+                  <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/>
+                </svg>
+              </a>
             </div>
-            <img
-                :src="token.token_metadata.image"
-                alt="NFT Image"
-                class="w-64 h-64 object-cover rounded-lg shadow mt-6"
-            />
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h3 class="text-lg font-semibold mb-2">Основная информация</h3>
+                <div class="space-y-2">
+                  <p><strong>ID токена:</strong> {{ nftData.token_id }}</p>
+                  <p><strong>VIN:</strong> {{ nftData.vin }}</p>
+                  <p><strong>Контракт:</strong> {{ nftData.token_data.contract_addr }}</p>
+                  <p><strong>Сеть:</strong> {{ nftData.token_data.chain_name }} (ID: {{ nftData.token_data.chain_id }})
+                  </p>
+                  <p><strong>Транзакция:</strong>
+                    <a :href="`${nftData.token_data.token_url}/tx/${nftData.token_data.tx}`" target="_blank"
+                       class="text-blue-500 hover:underline">
+                      {{ nftData.token_data.tx }}
+                    </a>
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <h3 class="text-lg font-semibold mb-2">История обслуживания</h3>
+                <div v-if="nftData.token_data.records.length > 0" class="space-y-4">
+                  <div
+                      v-for="(record, index) in nftData.token_data.records"
+                      :key="index"
+                      class="border-l-4 border-blue-500 pl-4 py-2"
+                  >
+                    <div class="flex justify-between">
+                      <p class="font-medium">{{ formatDate(record.created_at) }}</p>
+                      <span v-if="record.signature" class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">
+                      ID чека: {{ record.signature }}
+                    </span>
+                    </div>
+                    <p class="text-gray-700">{{ record.description }}</p>
+                    <p v-if="record.company" class="text-sm text-gray-500">Сервис: {{ record.company }}</p>
+                  </div>
+                </div>
+                <div v-else class="text-gray-500">
+                  Нет записей об обслуживании
+                </div>
+              </div>
+            </div>
+
+            <!-- Ссылка для добавления записи ТО -->
+            <div v-if="serviceLink" class="mt-6 p-4 bg-gray-50 rounded-lg">
+              <h3 class="font-semibold mb-2">Ссылка для добавления записи ТО</h3>
+              <div class="flex items-center">
+                <input
+                    type="text"
+                    :value="serviceLink"
+                    readonly
+                    class="flex-1 p-2 border rounded-l-lg focus:outline-none"
+                    ref="serviceLinkInput"
+                >
+                <button
+                    @click="copyServiceLink"
+                    class="bg-blue-500 text-white px-4 py-2 rounded-r-lg hover:bg-blue-600"
+                >
+                  Копировать
+                </button>
+              </div>
+              <p class="text-sm text-gray-500 mt-2">
+                Отправьте эту ссылку сервисному центру для добавления записи о техническом обслуживании
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-4 mt-4" v-if="currentUserId == ad.user_id">
+              <button
+                  v-if="!ad.is_token_minted"
+                  @click="mintNFT"
+                  class="action-btn bg-blue-600 hover:bg-blue-700"
+                  :disabled="loading"
+              >
+                🎴 Получить NFT
+              </button>
+              <button
+                  v-if="ad.is_token_minted"
+                  @click="generateServiceLink"
+                  class="action-btn bg-green-600 hover:bg-green-700"
+              >
+                🔗 Создать ссылку для ТО
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -160,27 +269,25 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
-import axios from 'axios';
-import { useCookie } from "#app";
-import { useAdsStore } from "~/store/ads.js";
-import { useRouter } from 'vue-router';
+import {computed, ref} from 'vue';
+import {useAdsStore} from "~/store/ads.js";
 import {useChatStore} from "~/store/chat.js";
 import CarDetails from "~/components/ads/CarDetails.vue";
 import {usePaymentStore} from "~/store/payment.js";
 import {useAuthStore} from "~/store/auth.js";
+import {useNftStore} from "~/store/nft.js";
 
 const router = useRouter();
 const adsStore = useAdsStore();
 const chatStore = useChatStore();
 const paymentStore = usePaymentStore();
 const authStore = useAuthStore();
+const nftStore = useNftStore();
 const loading = ref(false);
 const loadingChat = ref(false);
-const token = ref(null);
 const error = ref('');
 
-const currentUserId = authStore.profile?.id
+const currentUserId = computed(() => authStore.profile?.id || null);
 const showTariffModal = ref(false);
 const selectedTariff = ref(null);
 const tariffs = ref([
@@ -205,6 +312,15 @@ const props = defineProps({
   },
 });
 
+const formattedPrice = computed(() => {
+  return new Intl.NumberFormat('ru-RU', {
+    style: 'currency',
+    currency: 'RUB',
+    maximumFractionDigits: 0
+  }).format(props.ad.price);
+});
+
+
 async function handlePromotion() {
   try {
     if (!selectedTariff.value) {
@@ -220,7 +336,7 @@ async function handlePromotion() {
       window.location.href = paymentLink;
     }
   } catch (err) {
-    await router.push({path: `/ads/${props.ad.id}`, query: { error: error }});
+    await router.push({path: `/ads/${props.ad.id}`, query: {error: error}});
     console.error('Ошибка:', error);
   } finally {
     showTariffModal.value = false;
@@ -245,18 +361,14 @@ async function startChat() {
     await router.push(`/chats?saved=true`);
   } catch (error) {
     console.error('Ошибка:', error);
-    await router.push({path: `/ads/${props.ad.id}`, query: { error: error }});
+    await router.push({path: `/ads/${props.ad.id}`, query: {error: error}});
   }
 }
 
-// Функция для редактирования объявления
 function editAd() {
-  // Перенаправление на страницу редактирования
   router.push(`/ads/${props.ad.id}/edit`)
-  // window.location.href = `/ads/${props.ad.id}/edit`;
 }
 
-// Функция для удаления объявления
 async function deleteAd() {
   await adsStore.deleteAd(props.ad.id)
 
@@ -267,18 +379,50 @@ async function deleteAd() {
   await router.push(`/ads?saved=true`);
 }
 
-// Функция для выпуска NFT
+// const nftData = ref({
+//   token_id: 0,
+//   vin: '',
+//   metadata_url: '',
+//   is_minted: false,
+//   created_at: '',
+//   token_data: {
+//     contract_addr: '',
+//     chain_id: 0,
+//     chain_name: '',
+//     token_id: 0,
+//     token_url: '',
+//     tx: '',
+//     records: []
+//   }
+// });
+
+if (props.ad.is_token_minted) {
+  try {
+    loading.value = true;
+    error.value = null;
+
+    await nftStore.fetchNftInfo(props.ad.vin)
+  } catch (err) {
+    console.error("Ошибка:", err);
+    error.value = "Произошла ошибка при выпуске или загрузке токена.";
+    props.ad.is_token_minted = false
+  } finally {
+    loading.value = false;
+  }
+}
+
+const nftData = ref(nftStore.nftInfo);
+
 async function mintNFT() {
   try {
     loading.value = true;
     error.value = null;
 
-    const tokenInfo = await axios.get(`http://localhost:8989/api/v1/ads/4/nftInfo`, {
-      headers: {
-        Authorization: useCookie('token').value || null
-      }
-    });
-    token.value = tokenInfo.data.data;
+    await nftStore.mintNFT(props.ad.vin)
+    props.ad.is_token_minted = true
+    await nftStore.fetchNftInfo(props.ad.vin)
+    nftData.value = nftStore.nftInfo
+    generateServiceLink()
   } catch (err) {
     console.error("Ошибка:", err);
     error.value = "Произошла ошибка при выпуске или загрузке токена.";
@@ -286,6 +430,35 @@ async function mintNFT() {
     loading.value = false;
   }
 }
+
+function formatDate(dateString) {
+  if (!dateString || dateString === '0001-01-01T00:00:00Z') return 'Дата не указана';
+  const date = new Date(dateString);
+  return date.toLocaleDateString('ru-RU', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+}
+
+const serviceLink = ref('')
+const serviceLinkInput = ref(null);
+
+function generateServiceLink() {
+  const baseUrl = window.location.origin;
+  serviceLink.value = `${baseUrl}/nft/${props.ad.vin}/add-record?adId=${props.ad.id}`;
+}
+
+function copyServiceLink() {
+  if (serviceLinkInput.value) {
+    serviceLinkInput.value.select();
+    document.execCommand('copy');
+    // Можно добавить уведомление об успешном копировании
+  }
+}
+
 </script>
 
 <style scoped>

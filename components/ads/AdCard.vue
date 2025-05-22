@@ -91,7 +91,7 @@ const isAuthenticated = computed(() => authStore.isAuthenticated);
 const formattedPrice = computed(() => {
   return new Intl.NumberFormat('ru-RU', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'RUB',
     maximumFractionDigits: 0
   }).format(ad.price);
 });
@@ -104,7 +104,8 @@ const formattedDate = computed(() => {
   }).format(new Date(ad.created_at));
 });
 
-const API_BASE = process.env.API_BASE_URL || 'http://localhost:8989';
+const config = useRuntimeConfig()
+const adsApi = config.public.adsApiBaseUrl;
 const imageLoading = ref(true);
 const showFallback = ref(false);
 
@@ -112,7 +113,7 @@ const imageUrl = computed(() => {
   if (!props.ad?.image_url) return `/default.jpg`;
 
   if (props.ad.image_url.startsWith('storage')) {
-    return `${API_BASE}/${props.ad.image_url}`;
+    return `${adsApi}/${props.ad.image_url}`;
   }
 
   return props.ad.image_url

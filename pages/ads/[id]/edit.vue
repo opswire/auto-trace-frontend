@@ -103,6 +103,103 @@
         />
       </div>
 
+      <!-- Категория -->
+      <div class="form-group">
+        <label for="category" class="block text-lg font-medium text-gray-700">Категория</label>
+        <select
+            id="category"
+            v-model="form.category"
+            required
+            class="input"
+        >
+          <option value="Седан">Седан</option>
+          <option value="Кроссовер">Кроссовер</option>
+          <option value="Внедорожник">Внедорожник</option>
+          <option value="Грузовик">Грузовик</option>
+          <option value="Купе">Купе</option>
+        </select>
+      </div>
+
+      <!-- Регистрационный номер -->
+      <div class="form-group">
+        <label for="reg_number" class="block text-lg font-medium text-gray-700">Рег. номер</label>
+        <input
+            type="text"
+            id="reg_number"
+            v-model="form.reg_number"
+            required
+            class="input"
+            placeholder="А123АА777"
+        />
+      </div>
+
+      <!-- Тип прав -->
+      <div class="form-group">
+        <label for="type" class="block text-lg font-medium text-gray-700">Категория прав</label>
+        <select
+            id="type"
+            v-model="form.type"
+            required
+            class="input"
+        >
+          <option value="A">A</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+        </select>
+      </div>
+
+      <!-- Цвет -->
+      <div class="form-group">
+        <label for="color" class="block text-lg font-medium text-gray-700">Цвет</label>
+        <input
+            type="text"
+            id="color"
+            v-model="form.color"
+            required
+            class="input"
+            placeholder="Введите цвет автомобиля"
+        />
+      </div>
+
+      <!-- Мощность -->
+      <div class="form-group">
+        <label for="hp" class="block text-lg font-medium text-gray-700">Мощность (л.с.)</label>
+        <input
+            type="number"
+            id="hp"
+            v-model="form.hp"
+            required
+            class="input"
+            placeholder="Укажите мощность"
+        />
+      </div>
+
+      <!-- Полная масса -->
+      <div class="form-group">
+        <label for="full_weight" class="block text-lg font-medium text-gray-700">Полная масса (кг)</label>
+        <input
+            type="number"
+            id="full_weight"
+            v-model="form.full_weight"
+            required
+            class="input"
+            placeholder="Укажите полную массу"
+        />
+      </div>
+
+      <!-- Масса без нагрузки -->
+      <div class="form-group">
+        <label for="solo_weight" class="block text-lg font-medium text-gray-700">Снаряженная масса (кг)</label>
+        <input
+            type="number"
+            id="solo_weight"
+            v-model="form.solo_weight"
+            required
+            class="input"
+            placeholder="Укажите снаряженную массу"
+        />
+      </div>
+
       <!-- Изображение -->
       <div class="form-group">
         <label for="image" class="block text-lg font-medium text-gray-700">Изображение</label>

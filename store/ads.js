@@ -2,6 +2,7 @@
 import {defineStore} from 'pinia';
 import {useCookie, useNuxtApp} from '#app';
 import router from "#app/plugins/router.js";
+import axios from "axios";
 
 export const useAdsStore = defineStore('ads', {
     state: () => ({
@@ -17,12 +18,13 @@ export const useAdsStore = defineStore('ads', {
             this.loading = true;
             this.error = null;
 
-            const {$axios} = useNuxtApp(); // Получаем экземпляр axios
+            const {$axiosAds} = useNuxtApp();
 
             try {
-                const response = await $axios.get('/ads', {
+                const response = await $axiosAds.get(`ads`, {
                     headers: {
-                        Authorization: useCookie('token').value || null
+                        Authorization: useCookie('token').value || null,
+                        'Content-Type': 'application/json'
                     },
                     params: {
                         page: params.page || 1,
@@ -43,35 +45,38 @@ export const useAdsStore = defineStore('ads', {
         },
 
         getImagePhoto(ad) {
-            const API_BASE = process.env.API_BASE_URL || 'http://localhost:8989';
+            const config = useRuntimeConfig()
+            const adsApiUrl = config.public.adsApiBaseUrl;
 
             if (!ad?.image_url) return `/default.jpg`;
 
             if (ad.image_url.startsWith('storage')) {
-                return `${API_BASE}/${ad.image_url}`;
+                return `${adsApiUrl}/${ad.image_url}`;
             }
 
             return ad.image_url
         },
 
         getDefaultAvatar() {
-            const API_BASE = process.env.API_BASE_URL || 'http://localhost:8989';
+            const config = useRuntimeConfig()
+            const adsApiUrl = config.public.adsApiBaseUrl;
 
-            return `${API_BASE}/storage/avatar.jpg`
+            return `${adsApiUrl}/storage/avatar.jpg`
         },
 
         async fetchAdById(id) {
             this.loading = true;
             this.error = null;
 
-            const {$axios} = useNuxtApp(); // Получаем экземпляр axios
+            const {$axiosAds} = useNuxtApp();
 
             try {
-                const response = await $axios.get(`/ads/${id}`, {
+                const response = await $axiosAds.get(`/ads/${id}`, {
                     headers: {
                         Authorization: useCookie('token').value || null
                     }
-                }); // Запрос к API /ads
+                });
+
                 this.currentAd = response.data.data;
             } catch (err) {
                 console.error('Error loading ads:', err);
@@ -85,11 +90,11 @@ export const useAdsStore = defineStore('ads', {
             this.loading = true;
             this.error = null;
 
-            const {$axios} = useNuxtApp();
+            const {$axiosAds} = useNuxtApp();
 
             try {
                 console.log('form', form)
-                await $axios.patch(`/ads/${form.id}`, form, {
+                await $axiosAds.patch(`/ads/${form.id}`, form, {
                     headers: {
                         Authorization: useCookie('token').value || null,
                         'Content-Type': 'multipart/form-data',
@@ -103,14 +108,38 @@ export const useAdsStore = defineStore('ads', {
             }
         },
 
+        async createAd(form) {
+            console.log('form', form)
+
+            this.loading = true;
+            this.error = null;
+
+            const {$axiosAds} = useNuxtApp();
+
+            try {
+                await $axiosAds.post('/ads', form.value, {
+                    headers: {
+                        Authorization: useCookie('token').value || null,
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+            } catch (err) {
+                console.error('Error update ad:', err);
+                this.error = err.message;
+                throw err
+            } finally {
+                this.loading = false;
+            }
+        },
+
         async deleteAd(id) {
             this.loading = true;
             this.error = null;
 
-            const {$axios} = useNuxtApp();
+            const {$axiosAds} = useNuxtApp();
 
             try {
-                await $axios.delete(`/ads/${id}`, {
+                await $axiosAds.delete(`/ads/${id}`, {
                     headers: {
                         Authorization: useCookie('token').value || null
                     },
@@ -127,26 +156,26 @@ export const useAdsStore = defineStore('ads', {
             this.loading = true;
             this.error = null;
 
-            await $fetch(`http://localhost:8989/api/v1/ads/favorite`, {
-                method: 'POST',
-                body: {
-                    ad_id: adId
-                },
+            const {$axiosAds} = useNuxtApp();
+
+            await $axiosAds.post(`/ads/favorite`, {
+                ad_id: adId
+            }, {
                 headers: {
-                    Authorization: useCookie('token').value || null
+                    Authorization: useCookie('token').value || null,
                 },
             })
-                .then(response => {
-                    // const ad = this.ads.filter(ad => ad.id === adId)
-                    // ad.is_favorite = (ad.is_favorite === false)
-                })
-                .catch(error => {
-                    this.error = error.message
-                    router.push({path: `/ads`, query: { error: error }});
-                    throw error
-                }).finally(() => {
-                    this.loading = false
-                })
+            .then(response => {
+                // const ad = this.ads.filter(ad => ad.id === adId)
+                // ad.is_favorite = (ad.is_favorite === false)
+            })
+            .catch(error => {
+                this.error = error.message
+                router.push({path: `/ads`, query: {error: error}});
+                throw error
+            }).finally(() => {
+                this.loading = false
+            })
         },
     }
 });

@@ -32,7 +32,7 @@
 
 <script setup>
 import Header from '~/components/Header.vue';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted  } from 'vue';
 import {useAuthStore} from "~/store/auth.js";
 
 const router = useRouter();
@@ -43,30 +43,28 @@ const successMessage = ref('');
 const errorMessage = ref('');
 
 onMounted(async () => {
-  await checkNotifications();
   await authStore.fetchProfile()
 });
 
+const clearNotificationAfterDelay = (messageRef) => {
+  setTimeout(() => {
+    messageRef.value = '';
+    router.replace({ query: {} });
+  }, 7000);
+};
+
 const checkNotifications = () => {
-  // Обработка успешного сообщения
   if (route.query.success) {
     successMessage.value = decodeURIComponent(route.query.success);
     clearNotificationAfterDelay(successMessage);
   }
 
-  // Обработка ошибки
   if (route.query.error) {
     errorMessage.value = decodeURIComponent(route.query.error);
     clearNotificationAfterDelay(errorMessage);
   }
 };
-
-const clearNotificationAfterDelay = (messageRef) => {
-  setTimeout(() => {
-    messageRef.value = '';
-    router.replace({ query: {} }); // Очищаем параметры
-  }, 3000);
-};
+checkNotifications()
 
 // Отслеживаем изменения маршрута
 watch(() => route.fullPath, checkNotifications);

@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia';
+import {defineStore} from 'pinia';
 import axios from "axios";
-import {useCookie} from "#app";
+import {useCookie, useNuxtApp} from "#app";
 
 export const usePaymentStore = defineStore('payment', {
     state: () => ({
@@ -24,12 +24,14 @@ export const usePaymentStore = defineStore('payment', {
     }),
     actions: {
         async promoteAd(adId, tariffId) {
-            try {
-                this.loading = true;
-                this.error = null;
+            this.loading = true;
+            this.error = null;
 
-                const response = await axios.post(
-                    `http://localhost:8989/api/v1/payments`,
+            const {$axiosPayment} = useNuxtApp();
+
+            try {
+                const response = await $axiosPayment.post(
+                    `payments`,
                     {
                         ad_id: adId,
                         tariff_id: tariffId,
