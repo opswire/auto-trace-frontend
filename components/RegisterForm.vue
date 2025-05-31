@@ -24,6 +24,17 @@
             required
         />
       </div>
+      <div class="mb-6">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="name">Имя</label>
+        <input
+            v-model="name"
+            type="text"
+            id="name"
+            class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+            placeholder="Введите ваше имя"
+            required
+        />
+      </div>
       <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-500 transition duration-200">
         Зарегистрироваться
       </button>
@@ -45,18 +56,19 @@ const router = useRouter();
 
 const email = ref('');
 const password = ref('');
+const name = ref('');
 const errorMessage = ref('');
 
 const handleSubmit = async () => {
   try {
     const response = await authStore.register(email.value, password.value)
 
-    console.log('Регистрация успешна:', response.data);
+    console.log('Регистрация успешна:', response);
 
     await router.push({path: '/', query: {success: 'Регистрация успешна!'}});
   } catch (error) {
     console.log(error)
-    errorMessage.value = error.response?.data?.message || 'Ошибка регистрации';
+    errorMessage.value = 'Ошибка регистрации';
   }
 };
 </script>

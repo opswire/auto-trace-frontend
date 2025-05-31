@@ -72,13 +72,11 @@ onMounted(async () => {
     }
 
     const response = await authStore.fetchProfile(authStore.token)
+    console.log("response from profile: ", response)
 
-    if (!response.ok) throw new Error('Ошибка загрузки профиля')
-
-    user.value = await response.json()
+    user.value = response
   } catch (error) {
     console.error('Ошибка:', error)
-    await authStore.logout()
     await router.push('/login')
   } finally {
     isLoading.value = false

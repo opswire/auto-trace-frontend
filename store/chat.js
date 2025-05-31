@@ -14,9 +14,9 @@ export const useChatStore = defineStore('chat', {
         async storeChat(sellerId, adId) {
             try {
                 this.loading = true;
-                const {$axios} = useNuxtApp();
+                const {$axiosChat} = useNuxtApp();
 
-                const response = await $axios.post(`/chats`, {
+                const response = await $axiosChat.post(`/chats`, {
                     "seller_id": sellerId,
                     "ad_id": adId,
                 }, {
@@ -28,7 +28,7 @@ export const useChatStore = defineStore('chat', {
 
                 console.log("data: ", response.data.data)
 
-                await this.chats.push(response.data.data);
+                this.chats.push(response.data.data);
                 return response
             } catch (error) {
                 this.error = error.response?.data?.message || 'Ошибка загрузки диалогов';
@@ -40,10 +40,10 @@ export const useChatStore = defineStore('chat', {
 
         async fetchChats() {
             this.loading = true;
-            const {$axios} = useNuxtApp();
+            const {$axiosChat} = useNuxtApp();
 
             try {
-                const response = await $axios.get('/chats', {
+                const response = await $axiosChat.get('/chats', {
                     headers: {
                         Authorization: useCookie('token').value || null,
                         'Content-Type': 'application/json',
@@ -60,10 +60,10 @@ export const useChatStore = defineStore('chat', {
 
         async fetchMessages(chatId) {
             this.loading = true;
-            const {$axios} = useNuxtApp();
+            const {$axiosChat} = useNuxtApp();
 
             try {
-                const response = await $axios.get(`/chats/${chatId}/messages`, {
+                const response = await $axiosChat.get(`/chats/${chatId}/messages`, {
                     headers: {
                         Authorization: useCookie('token').value || null,
                         'Content-Type': 'application/json',
@@ -79,10 +79,10 @@ export const useChatStore = defineStore('chat', {
         },
 
         async sendMessage(chatId, payload) {
-            const {$axios} = useNuxtApp();
+            const {$axiosChat} = useNuxtApp();
 
             try {
-                const response = await $axios.post(`/chats/${chatId}/messages`, payload, {
+                const response = await $axiosChat.post(`/chats/${chatId}/messages`, payload, {
                     headers: {
                         Authorization: useCookie('token').value || null,
                         'Content-Type': 'application/json',

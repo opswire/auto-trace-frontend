@@ -17,10 +17,12 @@ export const useAuthStore = defineStore('auth', {
         async register(email, password) {
             const {$axiosSso} = useNuxtApp();
 
-            await $axiosSso.post(
+            const response = await $axiosSso.post(
                 '/users/register',
                 {email: email, password: password}
             );
+
+            return response.data.data
         },
         async login(email, password) {
             const {$axiosSso} = useNuxtApp();
@@ -30,6 +32,7 @@ export const useAuthStore = defineStore('auth', {
                 {email: email, password: password}
             );
 
+            console.log("tok", response.data.data.access_token)
             this.setToken(response.data.data.access_token)
         },
         async serviceLogin(email, password) {
@@ -41,6 +44,22 @@ export const useAuthStore = defineStore('auth', {
             );
 
             return response.data.data.access_token
+        },
+        async serviceFetch(token) {
+            console.log(token || useCookie('token').value || null)
+            const {$axiosSso} = useNuxtApp();
+
+            const response = await $axiosSso.get(
+                '/users/profile',
+                {
+                    headers: {
+                        Authorization: token || useCookie('token').value || null,
+                        'Content-Type': 'application/json',
+                    }
+                }
+            );
+
+            return response.data.data
         },
         async logout() {
             this.token = null
@@ -65,11 +84,10 @@ export const useAuthStore = defineStore('auth', {
                 }
             );
 
-
             this.profile = response.data.data
             this.id = response.data.data.id
 
-            return response.data.data
+            return response.data
         },
     },
 })
