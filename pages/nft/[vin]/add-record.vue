@@ -223,7 +223,7 @@ async function handleLogin() {
 
     console.log(token)
 
-    const profileol = await authStore.fetchProfile(token)
+    const profile = await authStore.fetchProfile(token)
 
     if (profile.role !== "service") {
       await router.push({
