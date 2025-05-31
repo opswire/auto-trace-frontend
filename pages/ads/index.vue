@@ -2,9 +2,7 @@
   <div class="p-6">
     <h1 class="text-3xl font-bold mb-6 text-center">Список Объявлений</h1>
 
-    <!-- Верхняя панель с переключателем вкладок и кнопкой -->
     <div class="flex justify-between items-center mb-6">
-      <!-- Переключатель вкладок -->
       <div class="flex space-x-2">
         <button
             @click="setActiveTab('all')"
@@ -26,7 +24,6 @@
         </button>
       </div>
 
-      <!-- Кнопка для создания объявления -->
       <button
           @click="goToCreateAd"
           class="btn-create"
@@ -35,9 +32,7 @@
       </button>
     </div>
 
-    <!-- Фильтры и сортировка -->
     <div class="mb-6 flex flex-wrap gap-4 items-center">
-      <!-- Поиск по названию -->
       <input
           v-model="filters.title"
           placeholder="Поиск по названию"
@@ -45,7 +40,6 @@
           @input="onSearchInput"
       >
 
-      <!-- Поиск по описанию -->
       <input
           v-model="filters.description"
           placeholder="Поиск по описанию"
@@ -53,7 +47,6 @@
           @input="onSearchInput"
       >
 
-      <!-- Сортировка -->
       <select v-model="sortBy" @change="updateSorting" class="filter-select">
         <option value="id_asc">ID по возрастанию</option>
         <option value="id_desc">ID по убыванию</option>
@@ -62,12 +55,10 @@
       </select>
     </div>
 
-    <!-- Список объявлений -->
     <div>
       <AdList :ads="displayedAds" />
     </div>
 
-    <!-- Пагинация -->
     <div v-if="totalPages > 1" class="mt-6 flex justify-center items-center space-x-4">
       <button
           @click="prevPage"
@@ -144,7 +135,6 @@ const loadAds = async () => {
     filters: queryFilters,
   });
 
-  // ads.value = adsStore.ads;
   total.value = adsStore.total;
 };
 
@@ -152,14 +142,8 @@ const totalPages = computed(() => Math.ceil(total.value / itemsPerPage));
 
 const setActiveTab = async (tab) => {
   activeTab.value = tab;
-  currentPage.value = 1; // Сброс на первую страницу
+  currentPage.value = 1;
   filters.value = { title: '', description: '' };
-
-  // if (tab === 'all') {
-  //   ads.value = adsStore.ads
-  // } else {
-  //   ads.value = adsStore.ads.filter((ad) => ad.is_favorite === 1)
-  // }
 };
 
 const nextPage = () => currentPage.value++;

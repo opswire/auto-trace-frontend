@@ -1,7 +1,6 @@
 <template>
   <div class="min-h-screen bg-gray-100">
     <div class="max-w-md mx-auto py-12 px-4 sm:px-6 lg:px-8">
-      <!-- Блок авторизации (показывается если пользователь не авторизован как организация) -->
       <div v-if="!isAuthenticated" class="bg-white p-8 rounded-xl shadow-md">
         <h2 class="text-2xl font-bold text-center text-gray-900 mb-6">Авторизация сервисного центра</h2>
 
@@ -49,7 +48,6 @@
         </form>
       </div>
 
-      <!-- Основная форма (показывается только для авторизованных организаций) -->
       <div v-else class="bg-white rounded-xl shadow-md overflow-hidden">
         <div class="p-8">
           <div class="flex justify-between items-center mb-6">
@@ -186,19 +184,16 @@ const organization = ref({
   email: ''
 })
 
-// Формы
 const loginForm = ref({
   email: 'user3@example.com',
   password: 'pass'
 })
 
 
-// Проверяем авторизацию при загрузке
 onMounted(() => {
   checkAuth()
 })
 
-// Проверка авторизации в localStorage
 function checkAuth() {
   const orgData = localStorage.getItem('serviceCenterAuth')
   if (orgData) {
@@ -214,7 +209,6 @@ function checkAuth() {
   }
 }
 
-// Обработка входа
 async function handleLogin() {
   try {
     loginLoading.value = true
@@ -241,7 +235,6 @@ async function handleLogin() {
       email: loginForm.value.email
     }
 
-    // Сохраняем в localStorage
     localStorage.setItem('serviceCenterAuth', JSON.stringify({
       token: token,
       organization: organization.value
@@ -261,7 +254,6 @@ async function handleLogin() {
   }
 }
 
-// Выход из системы
 function handleLogout() {
   localStorage.removeItem('serviceCenterAuth')
   isAuthenticated.value = false

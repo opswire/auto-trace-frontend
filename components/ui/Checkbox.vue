@@ -55,4 +55,4 @@
 .native-checkbox:disabled:checked + .custom-checkbox {
   @apply bg-gray-400;
 }
-</st
+</style>

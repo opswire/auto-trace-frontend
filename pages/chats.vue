@@ -1,10 +1,8 @@
-<!-- pages/seller/chats.vue -->
 <template>
   <div class="container mx-auto p-6">
     <h1 class="text-3xl font-bold mb-8">Мои диалоги</h1>
 
     <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-      <!-- Список диалогов -->
       <div class="lg:col-span-1 bg-white rounded-xl shadow-lg p-4 h-[calc(100vh-200px)] overflow-y-auto">
         <div
             v-for="chat in chats"
@@ -20,7 +18,6 @@
             >
 
             <div class="flex-1">
-              <!-- Добавленная строка с ID объявления -->
               <div class="flex justify-between items-start">
                 <div>
                   <h3 class="font-semibold">{{ chat.buyer?.name || 'Anonymous' }}</h3>
@@ -52,7 +49,6 @@
         </div>
       </div>
 
-      <!-- Окно чата -->
       <div class="lg:col-span-3 bg-white rounded-xl shadow-lg p-6 h-[calc(100vh-200px)] flex flex-col">
         <div v-if="selectedChat" class="flex-1 overflow-y-auto mb-4 space-y-4" ref="chatWindow">
           <div
@@ -80,7 +76,6 @@
           Выберите диалог для начала общения
         </div>
 
-        <!-- Поле ввода -->
         <div v-if="selectedChat" class="border-t pt-4">
           <div class="flex gap-2">
             <input
@@ -117,9 +112,8 @@ const chatWindow = ref(null);
 
 const avatarUrl = computed(() => adsStore.getDefaultAvatar());
 
-// Загрузка диалогов
 onMounted(async () => {
-  window.setInterval( async ()=>{
+  window.setInterval(async () => {
     if (selectedChat !== null && selectedChat.value !== null && selectedChat.value.id !== null) {
       try {
         await chatStore.fetchMessages(selectedChat.value.id);
@@ -140,7 +134,6 @@ onMounted(async () => {
   }
 });
 
-// Выбор чата
 const selectChat = async (chat) => {
   selectedChat.value = chat;
 
@@ -154,7 +147,6 @@ const selectChat = async (chat) => {
   }
 };
 
-// Отправка сообщения
 const sendMessage = async () => {
   if (!newMessage.value.trim()) return;
 
@@ -176,7 +168,6 @@ const sendMessage = async () => {
   }
 };
 
-// Вспомогательные функции
 const formatTime = (dateString) => {
   if (!dateString) return '';
   const date = new Date(dateString);
@@ -191,13 +182,4 @@ const scrollToBottom = () => {
 </script>
 
 <style scoped>
-/* Анимация сообщений */
-.message-enter-active {
-  transition: all 0.3s ease;
-}
-
-.message-enter-from {
-  opacity: 0;
-  transform: translateY(10px);
-}
 </style>

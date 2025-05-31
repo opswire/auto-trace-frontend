@@ -87,10 +87,6 @@ const handleLogout = () => {
   authStore.logout()
   router.push('/login')
 }
-
-const handleEditProfile = () => {
-  router.push('/profile/edit')
-}
 </script>
 
 <style scoped>
@@ -137,13 +133,5 @@ const handleEditProfile = () => {
   100% {
     background-position: 0% 50%;
   }
-}
-
-.text-gradient {
-  background: linear-gradient(90deg, #3b82f6, #a855f7);
-  background-size: 400% 400%;
-  animation: gradientAnimation 8s ease infinite;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 </style>

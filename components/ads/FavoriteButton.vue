@@ -1,4 +1,3 @@
-<!-- components/FavoriteButton.vue -->
 <template>
   <button
       @click="toggleFavorite"

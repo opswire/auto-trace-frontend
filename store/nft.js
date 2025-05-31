@@ -1,4 +1,3 @@
-// stores/auth.js
 import {defineStore} from 'pinia'
 import {useCookie, useNuxtApp} from '#app'
 import axios from "axios";

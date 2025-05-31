@@ -1,4 +1,3 @@
-// stores/ads.js
 import {defineStore} from 'pinia';
 import {useCookie, useNuxtApp} from '#app';
 import router from "#app/plugins/router.js";

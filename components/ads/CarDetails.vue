@@ -92,9 +92,4 @@ defineProps({
     @apply text-blue-600;
   }
 }
-
-.color-swatch {
-  @apply w-4 h-4 rounded-full border
-  border-gray-300 shadow-sm;
-}
 </style>

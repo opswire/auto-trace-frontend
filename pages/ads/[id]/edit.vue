@@ -1,6 +1,5 @@
 <template>
   <div class="create-listing bg-gray-50 p-8 rounded-lg shadow-md max-w-4xl mx-auto relative">
-    <!-- Кнопка назад -->
     <button
         @click="goBack"
         class="absolute top-4 left-4 flex items-center text-blue-700 hover:text-blue-900"
@@ -12,7 +11,6 @@
 
     <h1 class="text-4xl font-bold text-center mb-6 text-blue-700">Редактирование объявления</h1>
     <form @submit.prevent="submitForm" class="space-y-6">
-      <!-- Название -->
       <div class="form-group">
         <label for="title" class="block text-lg font-medium text-gray-700">Название</label>
         <input
@@ -25,7 +23,6 @@
         />
       </div>
 
-      <!-- Описание -->
       <div class="form-group">
         <label for="description" class="block text-lg font-medium text-gray-700">Описание</label>
         <textarea
@@ -37,7 +34,6 @@
         ></textarea>
       </div>
 
-      <!-- Цена -->
       <div class="form-group">
         <label for="price" class="block text-lg font-medium text-gray-700">Цена</label>
         <input
@@ -51,7 +47,6 @@
         />
       </div>
 
-      <!-- VIN Номер -->
       <div class="form-group">
         <label for="make" class="block text-lg font-medium text-gray-700">VIN Номер</label>
         <input
@@ -64,7 +59,6 @@
         />
       </div>
 
-      <!-- Марка -->
       <div class="form-group">
         <label for="make" class="block text-lg font-medium text-gray-700">Марка</label>
         <input
@@ -77,7 +71,6 @@
         />
       </div>
 
-      <!-- Модель -->
       <div class="form-group">
         <label for="model" class="block text-lg font-medium text-gray-700">Модель</label>
         <input
@@ -90,7 +83,6 @@
         />
       </div>
 
-      <!-- Год выпуска -->
       <div class="form-group">
         <label for="year" class="block text-lg font-medium text-gray-700">Год выпуска</label>
         <input
@@ -103,7 +95,6 @@
         />
       </div>
 
-      <!-- Категория -->
       <div class="form-group">
         <label for="category" class="block text-lg font-medium text-gray-700">Категория</label>
         <select
@@ -120,7 +111,6 @@
         </select>
       </div>
 
-      <!-- Регистрационный номер -->
       <div class="form-group">
         <label for="reg_number" class="block text-lg font-medium text-gray-700">Рег. номер</label>
         <input
@@ -133,7 +123,6 @@
         />
       </div>
 
-      <!-- Тип прав -->
       <div class="form-group">
         <label for="type" class="block text-lg font-medium text-gray-700">Категория прав</label>
         <select
@@ -148,7 +137,6 @@
         </select>
       </div>
 
-      <!-- Цвет -->
       <div class="form-group">
         <label for="color" class="block text-lg font-medium text-gray-700">Цвет</label>
         <input
@@ -161,7 +149,6 @@
         />
       </div>
 
-      <!-- Мощность -->
       <div class="form-group">
         <label for="hp" class="block text-lg font-medium text-gray-700">Мощность (л.с.)</label>
         <input
@@ -174,7 +161,6 @@
         />
       </div>
 
-      <!-- Полная масса -->
       <div class="form-group">
         <label for="full_weight" class="block text-lg font-medium text-gray-700">Полная масса (кг)</label>
         <input
@@ -187,7 +173,6 @@
         />
       </div>
 
-      <!-- Масса без нагрузки -->
       <div class="form-group">
         <label for="solo_weight" class="block text-lg font-medium text-gray-700">Снаряженная масса (кг)</label>
         <input
@@ -200,7 +185,6 @@
         />
       </div>
 
-      <!-- Изображение -->
       <div class="form-group">
         <label for="image" class="block text-lg font-medium text-gray-700">Изображение</label>
         <input
@@ -211,7 +195,6 @@
         />
       </div>
 
-      <!-- Кнопка -->
       <div class="text-center">
         <button
             type="submit"

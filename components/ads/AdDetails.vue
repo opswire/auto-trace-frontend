@@ -12,13 +12,11 @@
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div class="lg:col-span-3">
           <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-            <!-- Заголовок и цена -->
             <div class="flex items-center justify-between mb-6">
               <h1 class="text-3xl font-bold text-gray-800">{{ ad.title }}</h1>
               <span class="text-2xl font-semibold text-blue-600">{{ formattedPrice }}</span>
             </div>
 
-            <!-- Изображение автомобиля -->
             <div class="mb-8">
               <img
                   :src="imageUrl"
@@ -29,7 +27,6 @@
 
             <!-- Детали -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <!-- Характеристики -->
               <CarDetails
                   title="Характеристики"
                   :items="[
@@ -42,7 +39,6 @@
                   icon="📝"
               />
 
-              <!-- Регистрация -->
               <CarDetails
                   title="Регистрация"
                   :items="[
@@ -53,7 +49,6 @@
                   icon=📌
               />
 
-              <!-- Техника -->
               <CarDetails
                   title="Техника"
                   :items="[
@@ -109,7 +104,6 @@
                 🗑️ Удалить
               </button>
 
-              <!-- Новая кнопка продвижения -->
               <button
                   @click="showTariffModal = true"
                   class="action-btn bg-purple-500 hover:bg-purple-600"
@@ -120,7 +114,6 @@
             </div>
           </div>
 
-          <!-- Модальное окно выбора тарифа -->
           <Transition name="modal">
             <div v-if="showTariffModal" class="modal-mask">
               <div class="modal-container">
@@ -162,7 +155,6 @@
             </div>
           </Transition>
 
-          <!-- NFT информация -->
           <div v-if="ad.is_token_minted" class="bg-white rounded-xl shadow-lg p-6 mb-8">
             <div class="flex justify-between items-center mb-4">
               <h2 class="text-2xl font-bold">NFT Паспорт автомобиля</h2>
@@ -222,7 +214,6 @@
               </div>
             </div>
 
-            <!-- Ссылка для добавления записи ТО -->
             <div v-if="serviceLink" class="mt-6 p-4 bg-gray-50 rounded-lg">
               <h3 class="font-semibold mb-2">Ссылка для добавления записи ТО</h3>
               <div class="flex items-center">
@@ -379,23 +370,6 @@ async function deleteAd() {
   await router.push(`/ads?saved=true`);
 }
 
-// const nftData = ref({
-//   token_id: 0,
-//   vin: '',
-//   metadata_url: '',
-//   is_minted: false,
-//   created_at: '',
-//   token_data: {
-//     contract_addr: '',
-//     chain_id: 0,
-//     chain_name: '',
-//     token_id: 0,
-//     token_url: '',
-//     tx: '',
-//     records: []
-//   }
-// });
-
 if (props.ad.is_token_minted) {
   try {
     loading.value = true;
@@ -455,7 +429,6 @@ function copyServiceLink() {
   if (serviceLinkInput.value) {
     serviceLinkInput.value.select();
     document.execCommand('copy');
-    // Можно добавить уведомление об успешном копировании
   }
 }
 
@@ -484,16 +457,6 @@ function copyServiceLink() {
 
 .tariff-option:hover {
   @apply border-purple-300;
-}
-
-.modal-enter-active,
-.modal-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.modal-enter-from,
-.modal-leave-to {
-  opacity: 0;
 }
 
 .action-btn {

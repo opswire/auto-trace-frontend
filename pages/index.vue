@@ -1,7 +1,6 @@
 <template>
   <div class="bg-gray-50 min-h-screen">
 
-    <!-- Hero Section -->
     <section class="hero-section bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 text-white text-center py-40 relative overflow-hidden">
       <div class="container mx-auto px-4 relative z-10">
         <h1 class="text-6xl font-extrabold leading-tight mb-6 transform transition-transform duration-500 hover:scale-105">
@@ -19,7 +18,6 @@
       <div class="absolute inset-0 bg-hero-pattern bg-cover bg-center opacity-10"></div>
     </section>
 
-    <!-- Features Section -->
     <section class="py-20 bg-gray-50">
       <div class="container mx-auto px-4 text-center">
         <h2 class="text-4xl font-semibold mb-12 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
@@ -41,7 +39,6 @@
       </div>
     </section>
 
-    <!-- NFT Section -->
     <section class="bg-gray-100 py-20">
       <div class="container mx-auto px-4 text-center">
         <h2 class="text-4xl font-semibold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
@@ -67,7 +64,6 @@
       </div>
     </section>
 
-    <!-- Call to Action Section -->
     <section class="bg-gradient-to-r from-gray-900 to-gray-700 text-white py-16 relative overflow-hidden">
       <div class="container mx-auto px-4 text-center relative z-10">
         <h2 class="text-4xl font-semibold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
@@ -91,7 +87,6 @@ import { useAuthStore } from "~/store/auth.js";
 import { CheckCircleIcon, ShieldCheckIcon, BoltIcon, DocumentTextIcon } from "@heroicons/vue/24/solid";
 
 const authStore = useAuthStore();
-const isAuthenticated = computed(() => authStore.isAuthenticated);
 
 const features = [
   {
@@ -166,11 +161,4 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-.text-gradient {
-  background: linear-gradient(90deg, #3b82f6, #a855f7);
-  background-size: 400% 400%;
-  animation: gradient-animation 8s ease infinite;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
 </style>

@@ -46,8 +46,6 @@ const login = () => {
   const authStore = useAuthStore()
   const router = useRouter();
 
-
-  // Логика авторизации
   console.log("Email:", email.value, "Password:", password.value);
 
   authStore

@@ -1,14 +1,12 @@
 <template>
   <header class="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 text-white">
     <nav class="container mx-auto px-6 py-4 flex items-center justify-between relative">
-      <!-- Логотип -->
       <div class="logo text-3xl font-extrabold cursor-pointer">
         <NuxtLink to="/" class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 hover:from-blue-500 hover:to-purple-500 transition-all duration-500">
           AutoTrace
         </NuxtLink>
       </div>
 
-      <!-- Основное меню -->
       <div class="hidden md:flex space-x-12 items-center">
         <NuxtLink
             v-for="navItem in navItems"
@@ -26,9 +24,7 @@
         </NuxtLink>
       </div>
 
-      <!-- Правая часть -->
       <div class="flex items-center space-x-6">
-        <!-- Кнопки для неавторизованных -->
         <div v-if="!authStore.isAuthenticated" class="hidden md:flex space-x-6">
           <NuxtLink
               to="/register"
@@ -44,7 +40,6 @@
           </NuxtLink>
         </div>
 
-        <!-- Профиль пользователя -->
         <div v-else class="flex items-center space-x-4">
           <div class="relative group">
             <button
@@ -62,7 +57,6 @@
               />
             </button>
 
-            <!-- Выпадающее меню -->
             <transition
                 enter-active-class="transition-all duration-300 ease-out"
                 leave-active-class="transition-all duration-200 ease-in"
@@ -96,7 +90,6 @@
           </div>
         </div>
 
-        <!-- Мобильное меню -->
         <button
             class="md:hidden text-gray-300 hover:text-white transition-all"
             @click="isMobileMenuOpen = !isMobileMenuOpen"
@@ -106,7 +99,6 @@
       </div>
     </nav>
 
-    <!-- Мобильное меню -->
     <transition
         enter-active-class="transition-all duration-300 ease-out"
         leave-active-class="transition-all duration-200 ease-in"
@@ -191,7 +183,6 @@ const toggleDropdown = () => {
 </script>
 
 <style scoped>
-/* Градиентные кнопки */
 .btn-primary {
   @apply bg-gradient-to-r from-blue-600 to-purple-600 text-white
   py-3 px-8 rounded-full font-semibold hover:from-blue-700 hover:to-purple-700
@@ -203,48 +194,15 @@ const toggleDropdown = () => {
   font-semibold hover:bg-opacity-20 transition-all duration-300;
 }
 
-/* Анимация подчеркивания */
 .group:hover .group-hover\:w-full {
   width: 100%;
 }
 
-/* Аватар */
 img {
   transition: transform 0.3s ease;
 }
 img:hover {
   transform: scale(1.1) rotate(-5deg);
-}
-
-/* Выпадающее меню */
-.dropdown-enter-active,
-.dropdown-leave-active {
-  transition: all 0.3s ease;
-}
-.dropdown-enter-from,
-.dropdown-leave-to {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-
-/* Мобильное меню */
-.mobile-menu-enter-active,
-.mobile-menu-leave-active {
-  transition: all 0.3s ease;
-}
-.mobile-menu-enter-from,
-.mobile-menu-leave-to {
-  opacity: 0;
-  transform: translateY(-20px);
-}
-
-/* Градиентный текст */
-.text-gradient {
-  background: linear-gradient(90deg, #3b82f6, #a855f7);
-  background-size: 400% 400%;
-  animation: gradient-animation 8s ease infinite;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 }
 
 @keyframes gradient-animation {

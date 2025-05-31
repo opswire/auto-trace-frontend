@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <!-- Форма ввода данных -->
     <div v-if="!showContract" class="form-container">
       <h1>Генератор договора купли-продажи автомобиля</h1>
 

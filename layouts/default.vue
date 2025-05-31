@@ -66,7 +66,6 @@ const checkNotifications = () => {
 };
 checkNotifications()
 
-// Отслеживаем изменения маршрута
 watch(() => route.fullPath, checkNotifications);
 
 const checkSuccessMessage = () => {
@@ -93,20 +92,11 @@ html {
 .bg-gradient-to-r {
   background: linear-gradient(to right, #1a1a1a, #333);
 }
-/* Общие стили для уведомлений */
-.notification-base {
-  @apply fixed top-6 right-6 flex items-center
-  px-6 py-4 rounded-lg shadow-xl;
-  backdrop-filter: blur(2px);
-  min-width: 300px;
-}
 
-/* Стили для успешного уведомления */
 .success-notification {
   @apply notification-base bg-green-50 border-l-4 border-green-500 text-green-700;
 }
 
-/* Стили для ошибки */
 .error-notification {
   @apply notification-base bg-red-50 border-l-4 border-red-500 text-red-700;
 }
@@ -119,27 +109,8 @@ html {
   @apply text-2xl mr-3 animate-bounce;
 }
 
-/* Анимация */
-.slide-fade-enter-active {
-  transition: all 0.3s ease-out;
-}
-
-.slide-fade-leave-active {
-  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
-}
-
-.slide-fade-enter-from,
-.slide-fade-leave-to {
-  transform: translateX(20px);
-  opacity: 0;
-}
-
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.5; }
-}
-
-.animate-pulse {
-  animation: pulse 2s infinite;
 }
 </style>
