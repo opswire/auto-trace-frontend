@@ -12,6 +12,9 @@ export default defineNuxtConfig({
       adsApiBaseUrl: process.env.ADS_PUBLIC_API_BASE_URL,
       ssoApiBaseUrl: process.env.SSO_PUBLIC_API_BASE_URL,
       nftApiBaseUrl: process.env.NFT_PUBLIC_API_BASE_URL,
+      appointmentApiBaseUrl: process.env.APPOINTMENT_PUBLIC_API_BASE_URL,
+      paymentApiBaseUrl: process.env.PAYMENT_PUBLIC_API_BASE_URL,
+      chatApiBaseUrl: process.env.CHAT_PUBLIC_API_BASE_URL,
     }
   },
 })

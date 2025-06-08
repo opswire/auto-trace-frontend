@@ -234,6 +234,9 @@
               <p class="text-sm text-gray-500 mt-2">
                 Отправьте эту ссылку сервисному центру для добавления записи о техническом обслуживании
               </p>
+              <p class="text-sm text-gray-500 mt-2">
+                Для того, чтобы стать доверенным сервисным центром, отправьте заявку на почту auto-trace-official@gmail.com
+              </p>
             </div>
             <div class="flex flex-wrap gap-4 mt-4" v-if="currentUserId == ad.user_id">
               <button

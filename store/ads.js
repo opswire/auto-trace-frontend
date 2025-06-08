@@ -43,6 +43,11 @@ export const useAdsStore = defineStore('ads', {
             }
         },
 
+        getApiUrl() {
+            const config = useRuntimeConfig()
+            return  config.public.adsApiBaseUrl;
+        },
+
         getImagePhoto(ad) {
             const config = useRuntimeConfig()
             const adsApiUrl = config.public.adsApiBaseUrl;
@@ -116,7 +121,7 @@ export const useAdsStore = defineStore('ads', {
             const {$axiosAds} = useNuxtApp();
 
             try {
-                await $axiosAds.post('/ads', form.value, {
+                await $axiosAds.post('/ads', form, {
                     headers: {
                         Authorization: useCookie('token').value || null,
                         'Content-Type': 'multipart/form-data',

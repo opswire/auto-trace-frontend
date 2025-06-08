@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-100 flex flex-col">
+  <div class="min-h-screen bg-white flex flex-col">
     <Header />
     <main class="container mx-auto p-6 flex-grow">
       <Transition name="slide-fade">
@@ -43,14 +43,18 @@ const successMessage = ref('');
 const errorMessage = ref('');
 
 onMounted(async () => {
-  await authStore.fetchProfile()
+  try {
+    await authStore.fetchProfile(null)
+  } catch (e) {
+    console.log('Не удалось авторизоваться')
+  }
 });
 
 const clearNotificationAfterDelay = (messageRef) => {
   setTimeout(() => {
     messageRef.value = '';
     router.replace({ query: {} });
-  }, 7000);
+  }, 3000);
 };
 
 const checkNotifications = () => {
@@ -89,8 +93,11 @@ html {
   scroll-behavior: smooth;
 }
 
-.bg-gradient-to-r {
-  background: linear-gradient(to right, #1a1a1a, #333);
+.notification-base {
+  @apply fixed top-6 right-6 flex items-center
+  px-6 py-4 rounded-lg shadow-xl;
+  backdrop-filter: blur(2px);
+  min-width: 300px;
 }
 
 .success-notification {

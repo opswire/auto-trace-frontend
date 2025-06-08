@@ -50,7 +50,11 @@ const login = () => {
 
   authStore
       .login(email.value, password.value)
-      .then((_response) => router.push("/"))
-      .catch((error) => console.log("API error", error));
+      .then((response) => {
+          router.push("/")
+      })
+      .catch((error) => router.push({path: `/login`, query: {error: error.response.data.data}}));
 };
+
+// router.push({path: `/login`, query: {error: console.log(error.response.data.data)}})
 </script>

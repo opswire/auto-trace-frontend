@@ -4,10 +4,11 @@
     <section class="hero-section bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 text-white text-center py-40 relative overflow-hidden">
       <div class="container mx-auto px-4 relative z-10">
         <h1 class="text-6xl font-extrabold leading-tight mb-6 transform transition-transform duration-500 hover:scale-105">
-          Инновация в авто-торговле с NFT
+          Продавайте автомобили быстрее и выгоднее
         </h1>
         <p class="text-2xl mb-8 max-w-3xl mx-auto opacity-90">
-          Каждому автомобилю присваивается уникальный NFT, который позволяет отслеживать его историю, подтверждать подлинность и транзакции, обеспечивая прозрачность на всех этапах.
+          Продвигайте объявления, общайтесь с покупателями в мессенджере и оформляйте сделки
+          с автоматическим договором купли-продажи
         </p>
         <NuxtLink
             :to="'/ads'"
@@ -18,31 +19,71 @@
       <div class="absolute inset-0 bg-hero-pattern bg-cover bg-center opacity-10"></div>
     </section>
 
-    <section class="py-20 bg-gray-50">
-      <div class="container mx-auto px-4 text-center">
-        <h2 class="text-4xl font-semibold mb-12 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-          Наши ключевые преимущества
-        </h2>
-        <div class="grid sm:grid-cols-1 md:grid-cols-3 gap-12">
-          <div
-              v-for="(feature, index) in features"
-              :key="index"
-              class="bg-white p-8 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 relative feature-card"
-          >
-            <div class="absolute -top-6 left-1/2 transform -translate-x-1/2 w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
-              <component :is="feature.icon" class="w-8 h-8 text-white"/>
+    <!-- Promotion Section -->
+    <section class="bg-white py-20">
+      <div class="container mx-auto px-4">
+        <div class="flex flex-col md:flex-row items-center gap-10">
+          <div class="md:w-1/2">
+            <h2 class="text-3xl md:text-4xl font-semibold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-teal-600">
+              Выделите свое объявление
+            </h2>
+            <p class="text-lg text-gray-700 mb-6">
+              Получите в <span class="font-semibold">3 раза больше просмотров</span> с помощью наших инструментов продвижения
+            </p>
+            <NuxtLink
+                to="/ads"
+                class="inline-flex items-center bg-gradient-to-r from-blue-600 to-teal-600 text-white py-3 px-6 rounded-lg font-medium hover:from-blue-700 hover:to-teal-700 transition shadow-md">
+              <ArrowTrendingUpIcon class="w-5 h-5 mr-2"/>
+              Продвигать объявления
+            </NuxtLink>
+          </div>
+          <div class="md:w-1/2">
+            <div class="relative bg-white p-6 rounded-2xl shadow-xl border border-blue-200">
+              <div class="flex justify-between items-start mb-4">
+                <div>
+                  <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-teal-500 rounded-lg flex items-center justify-center mb-2">
+                    <StarIcon class="w-6 h-6 text-yellow-300"/>
+                  </div>
+                  <h3 class="text-xl font-bold text-gray-800">Премиум пакет</h3>
+                </div>
+                <span class="bg-green-100 text-green-800 py-1 px-3 rounded-full text-sm font-semibold">TOP 3 в поиске</span>
+              </div>
+
+              <ul class="space-y-3 mb-6">
+                <li class="flex items-center">
+                  <CheckCircleIcon class="w-5 h-5 text-green-500 mr-2"/>
+                  <span>Приоритет в поиске и категориях</span>
+                </li>
+                <li class="flex items-center">
+                  <CheckCircleIcon class="w-5 h-5 text-green-500 mr-2"/>
+                  <span>Выделение цветом и значком "Топ"</span>
+                </li>
+                <li class="flex items-center">
+                  <CheckCircleIcon class="w-5 h-5 text-green-500 mr-2"/>
+                  <span>В 3 раза больше просмотров</span>
+                </li>
+                <li class="flex items-center">
+                  <CheckCircleIcon class="w-5 h-5 text-green-500 mr-2"/>
+                  <span>Продвижение в соцсетях</span>
+                </li>
+              </ul>
+
+              <div class="flex justify-between items-center mt-6 pt-4 border-t border-gray-200">
+                <span class="text-2xl font-bold text-gray-900">990 ₽</span>
+                <button class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-5 rounded-lg font-medium transition">
+                  Выбрать
+                </button>
+              </div>
             </div>
-            <h3 class="text-2xl font-semibold mb-4 mt-8">{{ feature.title }}</h3>
-            <p class="text-gray-700">{{ feature.description }}</p>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="bg-gray-100 py-20">
+    <section class="bg-white py-20">
       <div class="container mx-auto px-4 text-center">
         <h2 class="text-4xl font-semibold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-          Что такое NFT для автомобилей?
+          Создайте NFT вашего автомобиля
         </h2>
         <div class="grid md:grid-cols-2 gap-12 items-center">
           <div class="relative">
@@ -112,6 +153,11 @@ const nftFeatures = [
   "Данные о происшествиях и повреждениях",
   "Подтверждения проверок и сертификаций"
 ];
+
+import {
+  ArrowTrendingUpIcon,
+  StarIcon,
+} from "@heroicons/vue/24/solid";
 </script>
 
 <style>

@@ -208,7 +208,6 @@
 </template>
 
 <script setup>
-import axios from 'axios';
 import { ref } from 'vue';
 import {useAdsStore} from "~/store/ads.js";
 
@@ -218,6 +217,7 @@ const adStore = useAdsStore();
 
 await adStore.fetchAdById(route.params.id)
 const form = ref(adStore.currentAd)
+console.log(adStore.currentAd)
 
 const handleFileUpload = (event) => form.value.image = event.target.files[0]
 

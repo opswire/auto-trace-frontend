@@ -1,7 +1,8 @@
 <template>
   <div class="container">
+    <h1 class="mb-5 text-lg text-center">Генератор договора купли-продажи автомобиля</h1>
+
     <div v-if="!showContract" class="form-container">
-      <h1>Генератор договора купли-продажи автомобиля</h1>
 
       <div class="form-section">
         <h2>Данные продавца</h2>

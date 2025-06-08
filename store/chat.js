@@ -85,13 +85,24 @@ export const useChatStore = defineStore('chat', {
                 const response = await $axiosChat.post(`/chats/${chatId}/messages`, payload, {
                     headers: {
                         Authorization: useCookie('token').value || null,
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'multipart/form-data',
                     }
                 });
             } catch (error) {
-                this.error = error.response?.data?.message || 'Ошибка отправки сообщения';
+                this.error = error.response?.data?.error || 'Ошибка отправки сообщения';
                 throw error;
             }
-        }
+        },
+
+        getMessageImageUrl(uri) {
+            const config = useRuntimeConfig()
+            const chatApiUrl = config.public.chatApiBaseUrl;
+
+            if (uri.startsWith('storage')) {
+                return `${chatApiUrl}/${uri}`;
+            }
+
+            return uri
+        },
     }
 });

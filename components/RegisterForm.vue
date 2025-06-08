@@ -54,14 +54,14 @@ import {useAuthStore} from "~/store/auth.js";
 const authStore = useAuthStore()
 const router = useRouter();
 
-const email = ref('');
-const password = ref('');
-const name = ref('');
+const email = ref('user@example.ru');
+const password = ref('pass');
+const name = ref('Test Name');
 const errorMessage = ref('');
 
 const handleSubmit = async () => {
   try {
-    const response = await authStore.register(email.value, password.value)
+    const response = await authStore.register(email.value, password.value, name.value)
 
     console.log('Регистрация успешна:', response);
 

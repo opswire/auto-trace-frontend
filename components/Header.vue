@@ -22,6 +22,21 @@
               :class="{ 'w-full': isActive(navItem.to) }"
           ></span>
         </NuxtLink>
+        <NuxtLink
+            v-for="navItem in authItems"
+            v-if="authStore.isAuthenticated"
+            :key="navItem.to"
+            :to="navItem.to"
+            class="relative group text-lg font-medium text-gray-300 hover:text-white transition-all duration-300"
+            :class="{ 'text-white': isActive(navItem.to) }"
+        >
+          {{ navItem.label }}
+          <span
+              class="absolute -bottom-2 left-0 w-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500
+            group-hover:w-full transition-all duration-300"
+              :class="{ 'w-full': isActive(navItem.to) }"
+          ></span>
+        </NuxtLink>
       </div>
 
       <div class="flex items-center space-x-6">
@@ -66,9 +81,19 @@
               <div v-if="isDropdownOpen" class="absolute right-0 mt-2 w-64 bg-white rounded-3xl shadow-2xl overflow-hidden z-20">
                 <div class="p-6 border-b border-gray-100">
                   <p class="text-lg font-semibold text-gray-800">{{ authStore.profile?.name }}</p>
-                  <p class="text-sm text-gray-500">{{ authStore.profile?.email }}</p>
+                  <p class="text-sm text-gray-500">Почта: {{ authStore.profile?.email }}</p>
+                  <p class="text-sm text-gray-500">Роль: {{ authStore.profile?.role }}</p>
                 </div>
                 <div class="p-3">
+                  <NuxtLink
+                      v-if="authStore.profile?.role === 'admin'"
+                      to="/admin"
+                      class="flex items-center p-3 rounded-lg hover:bg-gray-50 transition-all w-full"
+                      @click="isDropdownOpen = false"
+                  >
+                    <Bars3Icon class="w-6 h-6 text-blue-600 mr-3" />
+                    <span class="text-gray-700 font-medium">Админ-панель</span>
+                  </NuxtLink>
                   <NuxtLink
                       to="/profile"
                       class="flex items-center p-3 rounded-lg hover:bg-gray-50 transition-all w-full"
@@ -117,6 +142,16 @@
           >
             {{ navItem.label }}
           </NuxtLink>
+          <NuxtLink
+              v-for="navItem in authItems"
+              :key="navItem.to"
+              :to="navItem.to"
+              class="block text-lg font-medium text-gray-300 hover:text-white transition-all"
+              :class="{ 'text-white': isActive(navItem.to) }"
+              @click="isMobileMenuOpen = false"
+          >
+            {{ navItem.label }}
+          </NuxtLink>
           <div v-if="!authStore.isAuthenticated" class="space-y-4">
             <NuxtLink
                 to="/register"
@@ -141,7 +176,6 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '~/store/auth'
 import {
   Bars3Icon,
@@ -158,8 +192,12 @@ const isMobileMenuOpen = ref(false)
 
 const navItems = [
   { label: 'Объявления', to: '/ads' },
-  { label: 'Диалоги', to: '/chats' },
-  { label: 'Договоры', to: '/contracts' },
+]
+
+const authItems = [
+  { label: 'Диалоги', to: '/chats'},
+  { label: 'Договоры', to: '/contracts'},
+  { label: 'Встречи', to: '/appointments'},
 ]
 
 const avatarUrl = computed(() =>
@@ -206,8 +244,8 @@ img:hover {
 }
 
 @keyframes gradient-animation {
-  0% { background-position: 0% 50%; }
+  0% { background-position: 0 50%; }
   50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  100% { background-position: 0 50%; }
 }
 </style>

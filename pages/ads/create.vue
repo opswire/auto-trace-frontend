@@ -231,22 +231,22 @@ import {useAdsStore} from "~/store/ads.js";
 const adStore = useAdsStore()
 const router = useRouter();
 const form = ref({
-  title: 'test title',
-  description: 'test description',
-  price: 1337,
-  vin: 'test vin',
-  brand: 'test brand',
-  model: 'test model',
-  year_of_release: 2000,
+  title: 'Лада Аура',
+  description: 'Современный седан с улучшенной управляемостью и комфортом для повседневной езды.',
+  price: 1850000,
+  vin: 'XTA210930XXXXXXX',
+  brand: 'Lada',
+  model: 'Aura',
+  year_of_release: 2024,
   image: null,
   category: 'Седан',
   type: 'B',
-  hp: 249,
-  full_weight: 2100,
-  solo_weight: 1800,
-  color: 'Черный',
-  reg_number: 'А222АА'
-})
+  hp: 106,
+  full_weight: 1570,
+  solo_weight: 1100,
+  color: 'Серый',
+  reg_number: 'А777АА'
+});
 
 const handleFileUpload = (event) => {
   console.log(event.target.files[0])
@@ -261,7 +261,7 @@ const submitForm = async () => {
   } catch (error) {
     console.error('Ошибка при создании объявления:', error);
 
-    await router.push({path: `/ads/create`, query: { error: error }});
+    await router.push({path: `/ads/create`, query: { error: error.response.data.error }});
   }
 }
 

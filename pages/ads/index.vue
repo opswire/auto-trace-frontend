@@ -33,6 +33,13 @@
     </div>
 
     <div class="mb-6 flex flex-wrap gap-4 items-center">
+      <select v-model="sortBy" @change="updateSorting" class="filter-select">
+        <option value="id_asc">ID по возрастанию</option>
+        <option value="id_desc">ID по убыванию</option>
+        <option value="price_asc">Цена по возрастанию</option>
+        <option value="price_desc">Цена по убыванию</option>
+      </select>
+
       <input
           v-model="filters.title"
           placeholder="Поиск по названию"
@@ -47,11 +54,64 @@
           @input="onSearchInput"
       >
 
-      <select v-model="sortBy" @change="updateSorting" class="filter-select">
-        <option value="id_asc">ID по возрастанию</option>
-        <option value="id_desc">ID по убыванию</option>
-        <option value="price_asc">Цена по возрастанию</option>
-        <option value="price_desc">Цена по убыванию</option>
+      <input
+          v-model="filters.brand"
+          placeholder="Поиск по марке"
+          class="filter-input"
+          @input="onSearchInput"
+      >
+    </div>
+
+    <div class="mb-6 flex flex-wrap gap-4 items-center">
+      <input
+          v-model.number="filters.price_min"
+          type="number"
+          placeholder="Цена от"
+          class="filter-input"
+          @input="onSearchInput"
+      />
+
+      <input
+          v-model.number="filters.price_max"
+          type="number"
+          placeholder="Цена до"
+          class="filter-input"
+          @input="onSearchInput"
+      />
+
+      <input
+          v-model.number="filters.year_min"
+          type="number"
+          placeholder="Год выпуска от"
+          class="filter-input"
+          @input="onSearchInput"
+      />
+
+      <input
+          v-model.number="filters.year_max"
+          type="number"
+          placeholder="Год выпуска до"
+          class="filter-input"
+          @input="onSearchInput"
+      />
+    </div>
+
+    <div class="mb-6 flex flex-wrap gap-4 items-center">
+      <select v-model="filters.car_category" @change="onSearchInput" class="filter-select">
+        <option value="">Тип кузова</option>
+        <option value="Кроссовер">Кроссовер</option>
+        <option value="Седан">Седан</option>
+        <option value="Грузовик">Грузовик</option>
+        <option value="Внедорожник">Внедорожник</option>
+        <option value="Тягач">Тягач</option>
+        <option value="Купе">Купе</option>
+        <option value="Самосвал">Самосвал</option>
+      </select>
+
+      <select v-model="filters.driver_category" @change="onSearchInput" class="filter-select">
+        <option value="">Категория прав</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
       </select>
     </div>
 
@@ -93,9 +153,18 @@ const itemsPerPage = 10;
 const total = ref(0);
 const ads = ref([]);
 const sortBy = ref(route.query.sort || 'id_asc');
+
+
 const filters = ref({
   title: route.query.title || '',
-  description: route.query.description || ''
+  description: route.query.description || '',
+  brand: route.query.brand || '',
+  price_min: route.query.price_min || '',
+  price_max: route.query.price_max || '',
+  year_min: route.query.year_min || '',
+  year_max: route.query.year_max || '',
+  car_category: route.query.car_category || '',
+  driver_category: route.query.driver_category || '',
 });
 
 const displayedAds = computed(() => {
@@ -124,6 +193,13 @@ const loadAds = async () => {
   const queryFilters = Object.fromEntries(Object.entries( {
     "title": filters.value.title,
     "description": filters.value.description,
+    "brand": filters.value.brand,
+    "price_min": filters.value.price_min,
+    "price_max": filters.value.price_max,
+    "year_min": filters.value.year_min,
+    "year_max": filters.value.year_max,
+    "car_category": filters.value.car_category,
+    "driver_category": filters.value.driver_category,
     "is_favorite": activeTab.value === 'favorites',
   }).filter(([_, v]) => v !== ""));
   console.log("filters", queryFilters)
