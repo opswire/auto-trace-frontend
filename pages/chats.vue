@@ -30,7 +30,7 @@
               </div>
             </div>
           </div>
-          <div class="mt-4 text-right">
+          <div class="mt-4 text-right" v-if="chat.is_buyer === true">
             <button
                 @click="openAppointmentModal"
                 class="inline-flex items-center px-4 py-2 bg-green-500 text-white text-sm font-semibold rounded-lg shadow hover:bg-green-600 transition"
